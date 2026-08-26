@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}Rates{% endblock %}
+
+{% block content %}
+<div class="container my-4" style="max-width: 600px;">
+    <h2 class="mb-4">Add Rate</h2>
+    
+    <form method="POST" action="{% url 'templates_app:rates' %}">
+        {% csrf_token %}
+        
+        {% for field in form %}
+        <div class="mb-3">
+            <label for="{{ field.id_for_label }}" class="form-label fw-semibold">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}
+            <div class="text-danger small mt-1">{{ field.errors }}</div>
+            {% endif %}
+        </div>
+        {% endfor %}
+        
+        <button type="submit" class="btn btn-primary mt-2">Save Rate</button>
+    </form>
+
+    <hr class="my-5">
+
+    <h2 class="mb-3">Rate List</h2>
+    <div class="table-responsive">
+        <table class="table table-striped align-middle">
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Gender</th>
+                    <th>Rate</th>
+                    <th>Comment</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for rate in rates %}
+                <tr>
+                    <td>{{ rate.user }}</td>
+                    <td>{{ rate.gender }}</td>
+                    <td>{{ rate.rate }}</td>
+                    <td>{{ rate.comment }}</td>
+                    <td>
+                        <a href="{% url 'templates_app:edit_rate' rate.id %}" class="btn btn-sm btn-warning">Edit</a>
+                        <a href="{% url 'templates_app:delete_rate' rate.id %}" class="btn btn-sm btn-danger">Delete</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center text-muted">No rates yet.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

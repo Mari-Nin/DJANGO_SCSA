@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}
+About Page
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+    <h1>Welcome to readers Page</h1>
+
+    <div class="mb-3">
+        <a class="btn btn-primary" href="{% url 'home' %}">
+            Click to return to home page
+        </a>
+    </div>
+
+    <form method="POST" class="mb-4">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">Save Reader</button>
+    </form>
+
+    <h3 class="mt-4">Registered Readers:</h3>
+    <ul class="list-group">
+        {% for reader in readers %}
+            <li class="list-group-item">
+                {{ reader.name }}, {{ reader.email }} - {{ reader.gender }} - {{ reader.age }} years old
+            </li>
+        {% empty %}
+            <li class="list-group-item text-muted">No readers registered yet.</li>
+        {% endfor %}
+    </ul>
+</div>
+
+{% endblock %}

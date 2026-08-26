@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}Employee{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Add Employee</h2>
+    <form method="POST" action="{% url 'templates_app:employee' %}">
+        {% csrf_token %}
+        
+        {% for field in form %}
+        <div class="mb-3">
+            <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}
+            <div class="text-danger small">{{ field.errors }}</div>
+            {% endif %}
+        </div>
+        {% endfor %}
+        
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+
+    <hr class="my-4">
+
+    <h2>Employee List</h2>
+    <table class="table table-striped contact-table">
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Position</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for emp in employees %}
+            <tr>
+                <td>{{ emp.first_name }}</td>
+                <td>{{ emp.last_name }}</td>
+                <td>{{ emp.email }}</td>
+                <td>{{ emp.position }}</td>
+                <td>
+                    <a href="{% url 'templates_app:edit_employee' emp.id %}" class="btn btn-sm btn-warning">Edit</a>
+                    <a href="{% url 'templates_app:delete_employee' emp.id %}" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="text-center">No employees yet.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

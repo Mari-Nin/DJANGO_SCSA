@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block content %}
+    <title>Document</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    {% for post in posts %}
+        <h2>{{ post.title }}</h2>
+
+    {% empty %}
+        <p>პოსტები არ მოიძებნა.</p>
+    {% endfor %}
+{% endblock %}
